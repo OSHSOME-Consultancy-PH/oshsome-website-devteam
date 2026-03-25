@@ -24,7 +24,7 @@ export default function HomePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   
-  const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+  const API = `${process.env.REACT_APP_BACKEND_URL}api` || "";
 
   // Syncing the "Coming Soon" logic from your Services overview
   const processedModules = useMemo(() => {
@@ -71,7 +71,7 @@ export default function HomePage() {
 
         <div className="mx-auto max-w-screen-xl px-4 grid lg:grid-cols-2 gap-12 py-20 items-center w-full">
           <div className="text-white space-y-6">
-            <Badge className="bg-primary/20 text-primary border-primary/30 backdrop-blur-md px-4 py-1">
+            <Badge className="bg-primary/20 text-grey border-primary/30 backdrop-blur-md px-4 py-1">
               Trusted OSH Consultancy
             </Badge>
             <h1 
