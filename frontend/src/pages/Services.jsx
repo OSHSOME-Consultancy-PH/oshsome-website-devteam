@@ -1,41 +1,110 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import * as Icons from "lucide-react";
 import { modules, brand } from "../mock";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-import * as Icons from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Badge } from "../components/ui/badge";
 
-const Icon = ({ name, className }) => {
-  const Lucide = Icons[name] || Icons.Circle;
-  return <Lucide className={className} />;
+const ServiceIcon = ({ name, color, isComingSoon }) => {
+  const LucideIcon = Icons[name] || Icons.Circle;
+  return (
+    <div 
+      className="h-12 w-12 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 duration-300" 
+      style={{ backgroundColor: isComingSoon ? `${brand.colors.slate}15` : `${color}15` }}
+    >
+      <LucideIcon className="h-6 w-6" style={{ color: isComingSoon ? brand.colors.slate : color }} />
+    </div>
+  );
+};
+
+const ServiceCard = ({ module, isComingSoon, onNavigate }) => {
+  return (
+    <Card 
+      className={`group relative flex flex-col h-full overflow-hidden transition-all duration-300 ${
+        isComingSoon 
+          ? "opacity-75 grayscale-[0.4] border-dashed" 
+          : "hover:shadow-xl hover:-translate-y-1 cursor-pointer border-solid"
+      }`}
+      onClick={() => !isComingSoon && onNavigate(module.path)}
+    >
+      {isComingSoon && (
+        <Badge 
+          className="absolute top-3 right-3 z-10 bg-muted text-muted-foreground border-none backdrop-blur-md"
+          variant="outline"
+        >
+          Coming Soon
+        </Badge>
+      )}
+      
+      <CardHeader className="pb-4">
+        <ServiceIcon name={module.icon} color={brand.colors.primary} isComingSoon={isComingSoon} />
+        <CardTitle 
+          className="text-lg mt-4 leading-tight transition-colors group-hover:text-primary" 
+          style={{ fontFamily: brand.fonts.heading }}
+        >
+          {module.title}
+        </CardTitle>
+      </CardHeader>
+
+      <CardContent className="flex flex-col flex-grow">
+        <p className="text-sm text-muted-foreground leading-relaxed flex-grow">
+          {module.blurb}
+        </p>
+        
+        <Button 
+          disabled={isComingSoon}
+          className="mt-6 w-full rounded-lg font-medium transition-all"
+          style={{ 
+            backgroundColor: isComingSoon ? 'transparent' : brand.colors.primary, 
+            color: isComingSoon ? brand.colors.slate : brand.colors.white,
+            border: isComingSoon ? `1px solid ${brand.colors.slate}33` : 'none',
+            cursor: isComingSoon ? 'not-allowed' : 'pointer'
+          }}
+        >
+          {isComingSoon ? "Module in Progress" : module.cta}
+        </Button>
+      </CardContent>
+    </Card>
+  );
 };
 
 export default function ServicesPage() {
   const navigate = useNavigate();
+
+  // Logic to identify coming soon modules (2-7)
+  const processedModules = useMemo(() => {
+    const comingSoonIds = ["2", "3", "4", "5", "6", "7"]; 
+    return modules.map(m => ({
+      ...m,
+      isComingSoon: comingSoonIds.includes(String(m.id))
+    }));
+  }, []);
+
   return (
-    <div className="mx-auto max-w-screen-xl px-4 py-10" style={{ fontFamily: brand.fonts.body }}>
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold" style={{ fontFamily: brand.fonts.heading }}>Services Overview</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Explore our core training modules. Modules 2–4 are actively being developed and marked as Coming Soon.</p>
+    <div className="mx-auto max-w-screen-xl px-4 py-16" style={{ fontFamily: brand.fonts.body }}>
+      <header className="max-w-3xl mb-12">
+        <h1 
+          className="text-4xl md:text-5xl font-bold tracking-tight mb-4" 
+          style={{ fontFamily: brand.fonts.heading, color: brand.colors.slate }}
+        >
+          Training <span style={{ color: brand.colors.primary }}>Roadmap</span>
+        </h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          We are rapidly expanding our curriculum to cover the full spectrum of operational consultancy. 
+          <strong> Modules 2 through 7</strong> are currently in active development as we finalize 
+          technical documentation and interactive materials.
+        </p>
       </header>
-      <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
-        {modules.map((m) => (
-          <Card key={m.id} className="h-full">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-md flex items-center justify-center" style={{ backgroundColor: `${brand.colors.primary}22` }}>
-                  <Icon name={m.icon} className="h-5 w-5" />
-                </div>
-                <CardTitle className="text-base" style={{ fontFamily: brand.fonts.heading }}>{m.title}</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground min-h-14">{m.blurb}</p>
-              <Button className="mt-4 w-full" style={{ backgroundColor: brand.colors.primary, color: brand.colors.white }} onClick={() => navigate(m.path)}>
-                {m.cta}
-              </Button>
-            </CardContent>
-          </Card>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {processedModules.map((m) => (
+          <ServiceCard 
+            key={m.id} 
+            module={m} 
+            isComingSoon={m.isComingSoon} 
+            onNavigate={navigate}
+          />
         ))}
       </div>
     </div>

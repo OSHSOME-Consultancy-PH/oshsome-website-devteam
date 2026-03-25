@@ -113,3 +113,24 @@ code {
         border-bottom-color: inherit;
     }
 }
+
+/* Force dropdown to start from left edge of screen */
+.nav-menu-full-width {
+  left: 0 !important;
+  transform: none !important;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
