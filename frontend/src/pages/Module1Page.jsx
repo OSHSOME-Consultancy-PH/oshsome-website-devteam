@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { brand, so1Content, saveFormLocally } from "../mockData";
+import { brand, so1Content, saveFormLocally } from "../mock";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { Button } from "../components/ui/button";
