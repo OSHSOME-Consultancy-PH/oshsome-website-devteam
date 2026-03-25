@@ -7,6 +7,10 @@ import WEMPage from "./pages/WEM";
 import ServicesPage from "./pages/Services";
 import AboutPage from "./pages/About";
 import ContactPage from "./pages/Contact";
+import Module1Page from "./pages/Module1Page";
+import Module2Page from "./pages/Module2Page";
+import Module3aPage from "./pages/Module3aPage";
+import Module3bPage from "./pages/Module3bPage";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteFooter } from "./components/SiteFooter";
 
@@ -33,6 +37,10 @@ function App() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/module/so1" element={<Module1Page />} />
+            <Route path="/module/so2" element={<Module2Page />} />
+            <Route path="/module/so3a" element={<Module3aPage />} />
+            <Route path="/module/so3b" element={<Module3bPage />} />
             <Route path="/module/wem" element={<WEMPage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/about" element={<AboutPage />} />
